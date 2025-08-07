@@ -1,0 +1,28 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
+# Corrected file path (double backslashes or raw string)
+file_path = "E:\\ENGG\\THIRD YEAR\\MACHINE LEARNING LAB\\EXP01\\archive\\Screen_time.csv"
+
+# Load and clean data
+df = pd.read_csv(file_path).dropna()
+
+# Label encode categorical columns
+for col in ['Gender', 'Primary_Device', 'Health_Impacts', 'Urban_or_Rural']:
+    df[col] = LabelEncoder().fit_transform(df[col].astype(str))
+
+# Convert boolean column to int
+df['Exceeded_Recommended_Limit'] = df['Exceeded_Recommended_Limit'].astype(int)
+
+# Scale numerical features
+scaler = StandardScaler()
+num_cols = ['Age', 'Avg_Daily_Screen_Time_hr', 'Educational_to_Recreational_Ratio']
+df[num_cols] = scaler.fit_transform(df[num_cols])
+
+# Show processed data
+print("Preprocessed Data (First 5 Rows):")
+print(df.head())
+
+# Show statistical summary
+print("\nDescriptive Statistics:")
+print(df.describe())
